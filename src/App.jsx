@@ -37,6 +37,18 @@ export const App = () => {
     setIncompleteTodos(newTodos);
   };
 
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+    setIncompleteTodos(newIncompleteTodos);
+
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    // 　もともとのcompleteTodosの配列に、未完了リストから引っ張ってきたincompleteTodos
+    // を追加して、newCompleteTodosに代入する。
+    setCompleteTodos(newCompleteTodos);
+    // setStateで更新する。更新するために渡す値は、newCompleteTodos。
+  };
+
   return (
     <>
       <div className="input-area">
@@ -52,9 +64,9 @@ export const App = () => {
         <ul>
           {incompleteTodos.map((todo, index) => {
             return (
-              <div className="list-row">
+              <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
